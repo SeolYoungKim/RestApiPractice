@@ -31,4 +31,13 @@ public class ExceptionController {
 
         return errorResult;
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NullPostException.class)
+    public ErrorResult nullPostExceptionHandler() {
+        return ErrorResult.builder()
+                .code("404")
+                .message("글이 없습니다.")
+                .build();
+    }
 }

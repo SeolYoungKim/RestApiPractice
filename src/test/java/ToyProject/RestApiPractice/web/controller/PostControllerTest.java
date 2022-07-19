@@ -67,4 +67,43 @@ class PostControllerTest {
                 .andDo(print());
 
     }
+
+    @DisplayName("글 단건 조회")
+    @Test
+    void readPost() throws Exception {
+
+        AddPost addPost = AddPost.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postService.save(addPost);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/1")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("제목"))
+                .andExpect(jsonPath("$.text").value("내용"))
+                .andDo(print());
+    }
+
+    @DisplayName("잘못된 id로 조회 시, 예외 발생 및 메시지 출력")
+    @Test
+    void readPostByNullId() throws Exception {
+
+        AddPost addPost = AddPost.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postService.save(addPost);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/23434")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("404"))
+                .andExpect(jsonPath("$.message").value("글이 없습니다."))
+                .andDo(print());
+    }
 }
