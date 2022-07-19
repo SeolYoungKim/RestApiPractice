@@ -46,4 +46,25 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.text").value("내용"))
                 .andDo(print());
     }
+
+    @DisplayName("글 저장 시, 검증이 작동한다")
+    @Test
+    void validAddPost() throws Exception {
+
+        AddPost addPost = AddPost.builder()
+                .title("")
+                .text(null)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/add")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addPost)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("404"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.field.text").value("글이 없습니다."))
+                .andExpect(jsonPath("$.field.title").value("제목이 없습니다."))
+                .andDo(print());
+
+    }
 }
