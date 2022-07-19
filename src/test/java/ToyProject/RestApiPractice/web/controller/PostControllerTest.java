@@ -1,5 +1,7 @@
 package ToyProject.RestApiPractice.web.controller;
 
+import ToyProject.RestApiPractice.domain.Post;
+import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.service.PostService;
 import ToyProject.RestApiPractice.web.request.AddPost;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,6 +31,9 @@ class PostControllerTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -104,6 +113,29 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("404"))
                 .andExpect(jsonPath("$.message").value("글이 없습니다."))
+                .andDo(print());
+    }
+
+    @DisplayName("글 1페이지 조회")
+    @Test
+    void get1Page() throws Exception {
+
+        List<Post> postList = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("title" + i)
+                        .text("text" + i)
+                        .build())
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(postList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=1&size=5")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].title").value("title30"))
+                .andExpect(jsonPath("$.[0].text").value("text30"))
+                .andExpect(jsonPath("$.[4].title").value("title26"))
+                .andExpect(jsonPath("$.[4].text").value("text26"))
                 .andDo(print());
     }
 }

@@ -1,13 +1,20 @@
 package ToyProject.RestApiPractice.service;
 
+import ToyProject.RestApiPractice.domain.Post;
 import ToyProject.RestApiPractice.exception.NullPostException;
 import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -74,5 +81,29 @@ class PostServiceTest {
         //then
         assertThatThrownBy(() -> postService.findById(2L))
                 .isInstanceOf(NullPostException.class);
+    }
+
+    @DisplayName("글 1page 조회")
+    @Transactional
+    @Test
+    void get1Page() {
+        List<Post> postList = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("title" + i)
+                        .text("text" + i)
+                        .build())
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(postList);
+
+        PostPage postPage = PostPage.builder()
+                .build();
+
+        List<Post> pageList = postRepository.getPageList(postPage);
+
+        assertThat(pageList.size()).isEqualTo(10);
+        assertThat(pageList.get(0).getTitle()).isEqualTo("title30");
+        assertThat(pageList.get(9).getTitle()).isEqualTo("title21");
+
     }
 }

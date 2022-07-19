@@ -4,9 +4,13 @@ import ToyProject.RestApiPractice.domain.Post;
 import ToyProject.RestApiPractice.exception.NullPostException;
 import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +32,13 @@ public class PostService {
     public ResponsePost findById(Long id) throws NullPostException {
         Post post = postRepository.findById(id).orElseThrow(() -> new NullPostException("글이 없습니다."));
         return new ResponsePost(post);
+    }
+
+    public List<ResponsePost> getPageList(PostPage postPage) {
+        List<Post> pageList = postRepository.getPageList(postPage);
+
+        return pageList.stream()
+                .map(ResponsePost::new)
+                .collect(Collectors.toList());
     }
 }
