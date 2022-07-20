@@ -4,8 +4,10 @@ import ToyProject.RestApiPractice.domain.Post;
 import ToyProject.RestApiPractice.exception.NullPostException;
 import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.EditPost;
 import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,11 @@ class PostServiceTest {
 
     @Autowired
     private PostService postService;
+
+    @BeforeEach
+    void clean() {
+        postRepository.deleteAllInBatch();
+    }
 
     @DisplayName("글이 저장된다.")
     @Test
@@ -50,18 +57,18 @@ class PostServiceTest {
     @Test
     void findById() throws NullPostException {
         //given
-        AddPost addPost = AddPost.builder()
+        Post post = Post.builder()
                 .title("제목")
                 .text("내용")
                 .build();
 
-        postService.save(addPost);
+        postRepository.save(post);
 
         //when
-        ResponsePost findPost = postService.findById(1L);
+        ResponsePost findPost = postService.findById(post.getPId());
 
         //then
-        assertThat(findPost.getId()).isEqualTo(1L);
+        assertThat(findPost.getId()).isEqualTo(post.getPId());
         assertThat(findPost.getTitle()).isEqualTo("제목");
         assertThat(findPost.getText()).isEqualTo("내용");
 
@@ -79,7 +86,7 @@ class PostServiceTest {
         postService.save(addPost);
 
         //then
-        assertThatThrownBy(() -> postService.findById(2L))
+        assertThatThrownBy(() -> postService.findById(234L))
                 .isInstanceOf(NullPostException.class);
     }
 
@@ -105,5 +112,28 @@ class PostServiceTest {
         assertThat(pageList.get(0).getTitle()).isEqualTo("title30");
         assertThat(pageList.get(9).getTitle()).isEqualTo("title21");
 
+    }
+
+    @DisplayName("글 수정 테스트")
+    @Transactional
+    @Test
+    void editPost() {
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        EditPost editPost = EditPost.builder()
+                .title("하하하")
+                .text("호호호")
+                .build();
+
+
+        post.editPost(editPost);
+
+        assertThat(post.getTitle()).isEqualTo("하하하");
+        assertThat(post.getText()).isEqualTo("호호호");
     }
 }

@@ -4,6 +4,7 @@ import ToyProject.RestApiPractice.domain.Post;
 import ToyProject.RestApiPractice.exception.NullPostException;
 import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.EditPost;
 import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,16 @@ public class PostService {
         return pageList.stream()
                 .map(ResponsePost::new)
                 .collect(Collectors.toList());
+    }
+
+    public ResponsePost editPost(Long id, EditPost editPost) throws NullPostException {
+        Post findPost = postRepository.findById(id)
+                .orElseThrow(() -> new NullPostException("글이 없습니다."));
+
+        findPost.editPost(editPost);
+
+        postRepository.save(findPost);
+
+        return new ResponsePost(findPost);
     }
 }

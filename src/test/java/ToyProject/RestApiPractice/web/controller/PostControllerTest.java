@@ -4,7 +4,9 @@ import ToyProject.RestApiPractice.domain.Post;
 import ToyProject.RestApiPractice.repository.PostRepository;
 import ToyProject.RestApiPractice.service.PostService;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.EditPost;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,11 @@ class PostControllerTest {
     private PostRepository postRepository;
 
     ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void clean() {
+        postRepository.deleteAllInBatch();
+    }
 
     @DisplayName("글이 저장된다.")
     @Test
@@ -81,17 +88,17 @@ class PostControllerTest {
     @Test
     void readPost() throws Exception {
 
-        AddPost addPost = AddPost.builder()
+        Post post = Post.builder()
                 .title("제목")
                 .text("내용")
                 .build();
 
-        postService.save(addPost);
+        postRepository.save(post);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/post/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/{id}", post.getPId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.id").value(post.getPId()))
                 .andExpect(jsonPath("$.title").value("제목"))
                 .andExpect(jsonPath("$.text").value("내용"))
                 .andDo(print());
@@ -136,6 +143,32 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.[0].text").value("text30"))
                 .andExpect(jsonPath("$.[4].title").value("title26"))
                 .andExpect(jsonPath("$.[4].text").value("text26"))
+                .andDo(print());
+    }
+
+    @DisplayName("글 수정 테스트")
+    @Test
+    void editPost() throws Exception {
+
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        EditPost editPost = EditPost.builder()
+                .title("title")
+                .text("text")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/post/{id}", post.getPId())
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(editPost)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getPId()))
+                .andExpect(jsonPath("$.title").value("title"))
+                .andExpect(jsonPath("$.text").value("text"))
                 .andDo(print());
     }
 }

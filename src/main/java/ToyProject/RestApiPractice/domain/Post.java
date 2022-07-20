@@ -1,5 +1,6 @@
 package ToyProject.RestApiPractice.domain;
 
+import ToyProject.RestApiPractice.web.request.EditPost;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,5 +24,10 @@ public class Post {
     public Post(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public void editPost(EditPost editPost) {
+        this.title = editPost.getTitle();
+        this.text = editPost.getText();
     }
 }

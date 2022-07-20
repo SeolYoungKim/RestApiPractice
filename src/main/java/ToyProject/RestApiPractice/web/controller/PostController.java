@@ -3,6 +3,7 @@ package ToyProject.RestApiPractice.web.controller;
 import ToyProject.RestApiPractice.exception.NullPostException;
 import ToyProject.RestApiPractice.service.PostService;
 import ToyProject.RestApiPractice.web.request.AddPost;
+import ToyProject.RestApiPractice.web.request.EditPost;
 import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,10 @@ public class PostController {
     @GetMapping("/posts")
     public List<ResponsePost> readPostByPage(@ModelAttribute PostPage postPage) {
         return postService.getPageList(postPage);
+    }
+
+    @PatchMapping("/post/{id}")
+    public ResponsePost editPost(@PathVariable Long id, @RequestBody @Validated EditPost editPost) throws NullPostException {
+        return postService.editPost(id, editPost);
     }
 }
