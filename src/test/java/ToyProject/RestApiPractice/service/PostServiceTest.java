@@ -12,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,7 +90,6 @@ class PostServiceTest {
     }
 
     @DisplayName("글 1page 조회")
-    @Transactional
     @Test
     void get1Page() {
         List<Post> postList = IntStream.range(1, 31)
@@ -115,7 +113,6 @@ class PostServiceTest {
     }
 
     @DisplayName("글 수정 테스트")
-    @Transactional
     @Test
     void editPost() {
         Post post = Post.builder()
@@ -135,5 +132,22 @@ class PostServiceTest {
 
         assertThat(post.getTitle()).isEqualTo("하하하");
         assertThat(post.getText()).isEqualTo("호호호");
+    }
+
+    @DisplayName("글 삭제 테스트")
+    @Test
+    void deletePost() {
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        postService.deletePost(post.getPId());
+
+        assertThat(postRepository.findAll().size()).isEqualTo(0);
+        assertThatThrownBy(() -> postService.findById(post.getPId()))
+                .isInstanceOf(NullPostException.class);
     }
 }

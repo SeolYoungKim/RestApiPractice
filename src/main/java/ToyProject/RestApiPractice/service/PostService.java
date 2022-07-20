@@ -53,4 +53,8 @@ public class PostService {
 
         return new ResponsePost(findPost);
     }
+
+    public void deletePost(Long id) {
+        postRepository.deleteById(id);
+    }
 }

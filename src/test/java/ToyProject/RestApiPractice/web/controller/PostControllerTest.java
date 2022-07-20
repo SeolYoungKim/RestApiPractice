@@ -21,8 +21,7 @@ import java.util.stream.IntStream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -169,6 +168,24 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getPId()))
                 .andExpect(jsonPath("$.title").value("title"))
                 .andExpect(jsonPath("$.text").value("text"))
+                .andDo(print());
+    }
+
+    @DisplayName("글 삭제 테스트")
+    @Test
+    void deletePost() throws Exception {
+
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/post/{id}", post.getPId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Delete ok"))
                 .andDo(print());
     }
 }

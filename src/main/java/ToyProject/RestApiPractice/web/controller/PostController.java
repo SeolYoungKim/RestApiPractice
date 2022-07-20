@@ -37,4 +37,10 @@ public class PostController {
     public ResponsePost editPost(@PathVariable Long id, @RequestBody @Validated EditPost editPost) throws NullPostException {
         return postService.editPost(id, editPost);
     }
+
+    @DeleteMapping("/post/{id}")
+    public String deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return "Delete ok";
+    }
 }
