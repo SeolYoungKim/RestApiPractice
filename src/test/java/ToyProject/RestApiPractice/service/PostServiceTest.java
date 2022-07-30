@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -149,5 +150,58 @@ class PostServiceTest {
         assertThat(postRepository.findAll().size()).isEqualTo(0);
         assertThatThrownBy(() -> postService.findById(post.getPId()))
                 .isInstanceOf(NullPostException.class);
+    }
+
+    @DisplayName("저장 시간 조회 테스트")
+    @Test
+    void saveTimeTest() {
+        LocalDateTime now = LocalDateTime.of(2022, 7, 30, 0, 0, 0);
+
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        List<Post> posts = postRepository.findAll();
+
+        Post post1 = posts.get(0);
+
+        System.out.println(">>>>>>>>>>>> createDate=" + post1.getCreatedDate() + ", modifiedDate=" + post1.getModifiedDate());
+
+        assertThat(post.getCreatedDate()).isAfter(now);
+        assertThat(post.getModifiedDate()).isAfter(now);
+    }
+
+    @DisplayName("수정 시간 조회 테스트")
+    @Test
+    void EditTimeTest() throws InterruptedException {
+        LocalDateTime now = LocalDateTime.of(2022, 7, 30, 0, 0, 0);
+
+        Post post = Post.builder()
+                .title("제목")
+                .text("내용")
+                .build();
+
+        postRepository.save(post);
+
+        Thread.sleep(10000);
+
+        post.editPost(EditPost.builder()
+                .title("zz")
+                .text("yy")
+                .build());
+
+        postRepository.save(post);
+
+        List<Post> posts = postRepository.findAll();
+
+        Post post1 = posts.get(0);
+
+        System.out.println(">>>>>>>>>>>> createDate=" + post1.getCreatedDate() + ", modifiedDate=" + post1.getModifiedDate());
+
+        assertThat(post.getCreatedDate()).isAfter(now);
+        assertThat(post.getModifiedDate()).isAfter(now);
     }
 }
