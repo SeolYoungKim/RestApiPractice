@@ -42,3 +42,30 @@
                force-response: true
    ```
    
+3. WebSecurityConfigurerAdapter -> deprecated
+   - 책 내에서 사용하던 WebSecurityConfigurerAdapter가 deprecated되어 현재 버전에서는 지원되지 않음.
+   - 원래는 해당 어댑터를 상속받아 설정을 오버라이딩 하는 방식이었음.
+   - 변경 후, 상속받지 않고 모두 Bean으로 등록하는 방식으로 변경 됨
+   - 아래와 같이 설정 코드를 변경하여 해결
+   ```    
+   @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .headers().frameOptions().disable()
+                .and()
+                .authorizeHttpRequests()
+                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
+                .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
+
+        return http.build();
+    }
+   ```
