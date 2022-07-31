@@ -20,6 +20,11 @@ spring:
         default-page-size: 5
   profiles:
     include: oauth
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+    store-type: jdbc
 server:
   servlet:
     encoding:

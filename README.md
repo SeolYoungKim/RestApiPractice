@@ -69,3 +69,19 @@
         return http.build();
     }
    ```
+   
+4. 세션 - DB 연동 시, Table이 생성되지 않는 문제
+   - 책에서는 H2 database를 사용하였으나, 나는 Mysql을 사용하였다.
+   - spring.session.store-type=jdbc로 설정하였었으나, 테이블이 생성되지 않아 오류 페이지가 뜨는 문제가 발생함.
+   - Mysql 사용 시, 아래의 정보를 추가적으로 기입해주어야 한다. 
+     - initialize-schema : 기본 값이 `embedded`이기 때문에, embedded DB가 아니라면 아래 두개의 세션 관련 테이블이 자동 생성되지 않는다.
+       - SPRING_SESSION, SPRING_SESSION_ATTRIBUTES
+   - [참고 1. spring.session.jdbc.initialize-schema 옵션](https://smpark1020.tistory.com/212)
+   - [참고 2. Spring Session with JDBC](https://www.javadevjournal.com/spring/spring-session-with-jdbc/)
+   ```  
+   session:
+       jdbc:
+           initialize-schema: always  //always - 자동 테이블 생성 || never - 수동으로 세션 테이블 생성
+           table-name: SPRING_SESSION
+       store-type: jdbc
+   ```
