@@ -18,7 +18,10 @@ spring:
       pageable:
         one-indexed-parameters: true
         default-page-size: 5
+  profiles:
+    include: oauth
 server:
   servlet:
     encoding:
       force-response: true
+
