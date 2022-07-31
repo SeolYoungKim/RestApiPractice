@@ -22,4 +22,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .orderBy(post.pId.desc())
                 .fetch();
     }
+
+    @Override
+    public List<Post> findAllDesc() {
+        return jpaQueryFactory.selectFrom(post)
+                .orderBy(post.pId.desc())
+                .fetch();
+    }
 }

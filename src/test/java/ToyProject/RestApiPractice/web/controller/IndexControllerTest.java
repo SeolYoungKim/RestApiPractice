@@ -43,7 +43,7 @@ class IndexControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/")
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("스프링 부트로 시작하는 웹 서비스")))
+                .andExpect(content().string(containsString("스프링부트 웹서비스")))
                 .andDo(print());
     }
 }

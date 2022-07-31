@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface PostRepositoryCustom {
 
-    public List<Post> getPageList(PostPage postPage);
+    List<Post> getPageList(PostPage postPage);
+
+    List<Post> findAllDesc();
 }

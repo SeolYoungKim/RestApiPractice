@@ -20,10 +20,14 @@ public class Post extends BaseTimeEntity {
     @Column
     private String text;
 
+    @Column
+    private String author;
+
     @Builder
-    public Post(String title, String text) {
+    public Post(String title, String text, String author) {
         this.title = title;
         this.text = text;
+        this.author = author;
     }
 
     public void editPost(EditPost editPost) {

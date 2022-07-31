@@ -9,6 +9,7 @@ import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ public class PostService {
         Post post = Post.builder()
                 .title(addPost.getTitle())
                 .text(addPost.getText())
+                .author(addPost.getAuthor())
                 .build();
 
         postRepository.save(post);
@@ -35,6 +37,7 @@ public class PostService {
         return new ResponsePost(post);
     }
 
+    @Transactional(readOnly = true)
     public List<ResponsePost> getPageList(PostPage postPage) {
         List<Post> pageList = postRepository.getPageList(postPage);
 
@@ -54,7 +57,17 @@ public class PostService {
         return new ResponsePost(findPost);
     }
 
-    public void deletePost(Long id) {
-        postRepository.deleteById(id);
+    public void deletePost(Long id) throws NullPostException {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new NullPostException("글이 없습니다."));
+
+        postRepository.delete(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResponsePost> findAllDesc() {
+        return postRepository.findAllDesc().stream()
+                .map(ResponsePost::new)
+                .collect(Collectors.toList());
     }
 }

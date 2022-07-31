@@ -50,6 +50,7 @@ class PostControllerTest {
         AddPost addPost = AddPost.builder()
                 .title("제목")
                 .text("내용")
+                .author("김씨")
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/add")
@@ -59,6 +60,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("제목"))
                 .andExpect(jsonPath("$.text").value("내용"))
+                .andExpect(jsonPath("$.author").value("김씨"))
                 .andDo(print());
     }
 
