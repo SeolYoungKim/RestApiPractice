@@ -1,8 +1,8 @@
 package ToyProject.RestApiPractice.service;
 
-import ToyProject.RestApiPractice.domain.Post;
+import ToyProject.RestApiPractice.domain.post.Post;
 import ToyProject.RestApiPractice.exception.NullPostException;
-import ToyProject.RestApiPractice.repository.PostRepository;
+import ToyProject.RestApiPractice.repository.post.PostRepository;
 import ToyProject.RestApiPractice.web.request.AddPost;
 import ToyProject.RestApiPractice.web.request.EditPost;
 import ToyProject.RestApiPractice.web.request.PostPage;

@@ -1,5 +1,6 @@
-package ToyProject.RestApiPractice.domain;
+package ToyProject.RestApiPractice.domain.post;
 
+import ToyProject.RestApiPractice.domain.BaseTimeEntity;
 import ToyProject.RestApiPractice.web.request.EditPost;
 import lombok.*;
 

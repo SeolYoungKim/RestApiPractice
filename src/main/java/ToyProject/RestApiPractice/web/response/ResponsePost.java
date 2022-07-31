@@ -1,6 +1,6 @@
 package ToyProject.RestApiPractice.web.response;
 
-import ToyProject.RestApiPractice.domain.Post;
+import ToyProject.RestApiPractice.domain.post.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

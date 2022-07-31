@@ -1,6 +1,6 @@
-package ToyProject.RestApiPractice.repository;
+package ToyProject.RestApiPractice.repository.post;
 
-import ToyProject.RestApiPractice.domain.Post;
+import ToyProject.RestApiPractice.domain.post.Post;
 import ToyProject.RestApiPractice.web.request.PostPage;
 
 import java.util.List;

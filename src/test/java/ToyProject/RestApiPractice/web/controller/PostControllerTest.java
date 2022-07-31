@@ -1,7 +1,7 @@
 package ToyProject.RestApiPractice.web.controller;
 
-import ToyProject.RestApiPractice.domain.Post;
-import ToyProject.RestApiPractice.repository.PostRepository;
+import ToyProject.RestApiPractice.domain.post.Post;
+import ToyProject.RestApiPractice.repository.post.PostRepository;
 import ToyProject.RestApiPractice.service.PostService;
 import ToyProject.RestApiPractice.web.request.AddPost;
 import ToyProject.RestApiPractice.web.request.EditPost;

@@ -1,13 +1,13 @@
-package ToyProject.RestApiPractice.repository;
+package ToyProject.RestApiPractice.repository.post;
 
-import ToyProject.RestApiPractice.domain.Post;
+import ToyProject.RestApiPractice.domain.post.Post;
 import ToyProject.RestApiPractice.web.request.PostPage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static ToyProject.RestApiPractice.domain.QPost.post;
+import static ToyProject.RestApiPractice.domain.post.QPost.post;
 
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepositoryCustom{
