@@ -32,6 +32,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
+        // 구글 로그인 정보들을 서비스에서 사용하기 위해 변환하는 과정임.
+
         // 현재 로그인 진행 중인 서비스를 구분하는 코드
         String registrationId = userRequest
                 .getClientRegistration()
@@ -46,6 +48,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserNameAttributeName();
 
         // OAuth2UserService를 통해 가져온 OAuth2User attribute를 담을 클래스 (이후 다른 소셜 로그인도 해당 클래스 사용)
+        // OAuth2User -> OAuthAttributes(static 메서드를 이용하여 객체 생성)
         OAuthAttributes attributes = OAuthAttributes
                 .of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
@@ -61,8 +64,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+        User user = userRepository.findByEmail(attributes.getEmail())  // email로 user 검색
+                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))  // 검색한 user를 업데이트.
                 .orElse(attributes.toEntity());  // email로 유저 찾아봤는데 없으면 게스트
 
         return userRepository.save(user);

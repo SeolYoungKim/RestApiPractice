@@ -37,7 +37,11 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//테스트용 가짜 인증사용자 추가
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
