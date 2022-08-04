@@ -1,9 +1,9 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: kim
-    password: 8531
-    url: jdbc:mysql://localhost:3306/restApiPractice?serverTimezone=UTC&characterEncoding=UTF-8
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: kim
+#    password: 8531
+#    url: jdbc:mysql://localhost:3306/restApiPractice?serverTimezone=UTC&characterEncoding=UTF-8
   jpa:
 #    show-sql: true
     hibernate:
