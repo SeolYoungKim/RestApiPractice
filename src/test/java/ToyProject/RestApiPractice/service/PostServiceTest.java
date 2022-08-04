@@ -7,7 +7,7 @@ import ToyProject.RestApiPractice.web.request.AddPost;
 import ToyProject.RestApiPractice.web.request.EditPost;
 import ToyProject.RestApiPractice.web.request.PostPage;
 import ToyProject.RestApiPractice.web.response.ResponsePost;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
-    @BeforeEach
+    @AfterEach
     void clean() {
-        postRepository.deleteAllInBatch();
+        postRepository.deleteAll();
     }
 
     @DisplayName("글이 저장된다.")

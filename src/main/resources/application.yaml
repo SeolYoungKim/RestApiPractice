@@ -1,18 +1,15 @@
 spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: kim
-#    password: 8531
-#    url: jdbc:mysql://localhost:3306/restApiPractice?serverTimezone=UTC&characterEncoding=UTF-8
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
+      username: sa
   jpa:
-#    show-sql: true
-    hibernate:
-      ddl-auto: create
-#    properties:
-#      hibernate:
-#        format_sql: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        dialect:
+          nodeValue:
+            org.hibernate.dialect.MySQL57Dialect
+          storage_engine: innodb
   data:
     web:
       pageable:

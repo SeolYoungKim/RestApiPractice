@@ -42,7 +42,7 @@ class PostControllerTest {
 
     @BeforeEach
     void clean() {
-        postRepository.deleteAllInBatch();
+        postRepository.deleteAll();
     }
 
     @DisplayName("글이 저장된다.")
