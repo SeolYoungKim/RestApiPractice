@@ -16,7 +16,11 @@ spring:
         one-indexed-parameters: true
         default-page-size: 5
   profiles:
-    include: oauth
+    group:
+      local-real: local-real, oauth
+      real: real, real-db, oauth
+      real1: real1, real-db, oauth
+      real2: real2, real-db, oauth
   session:
     jdbc:
       initialize-schema: always
