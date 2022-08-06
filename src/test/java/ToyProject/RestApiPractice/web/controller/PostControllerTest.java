@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
 @WithMockUser(roles = "USER")
@@ -72,6 +74,7 @@ class PostControllerTest {
         AddPost addPost = AddPost.builder()
                 .title("")
                 .content(null)
+                .author("")
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/add")
@@ -82,6 +85,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
                 .andExpect(jsonPath("$.field.content").value("글이 없습니다."))
                 .andExpect(jsonPath("$.field.title").value("제목이 없습니다."))
+                .andExpect(jsonPath("$.field.author").value("작성자를 입력해주세요"))
                 .andDo(print());
 
     }
@@ -93,6 +97,7 @@ class PostControllerTest {
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         postRepository.save(post);
@@ -103,6 +108,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("제목"))
                 .andExpect(jsonPath("$.content").value("내용"))
+                .andExpect(jsonPath("$.author").value("작성자"))
                 .andDo(print());
     }
 
@@ -113,6 +119,7 @@ class PostControllerTest {
         AddPost addPost = AddPost.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         postService.save(addPost);
@@ -133,6 +140,7 @@ class PostControllerTest {
                 .mapToObj(i -> Post.builder()
                         .title("title" + i)
                         .content("text" + i)
+                        .author("author" + i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -155,6 +163,7 @@ class PostControllerTest {
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         postRepository.save(post);
@@ -171,6 +180,7 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("title"))
                 .andExpect(jsonPath("$.content").value("text"))
+                .andExpect(jsonPath("$.author").value("작성자"))
                 .andDo(print());
     }
 

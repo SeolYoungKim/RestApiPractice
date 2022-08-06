@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@Transactional
 @SpringBootTest
 class PostServiceTest {
 
@@ -42,6 +44,7 @@ class PostServiceTest {
         AddPost addPost = AddPost.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         //when
@@ -51,6 +54,7 @@ class PostServiceTest {
         assertThat(postRepository.findAll().size()).isEqualTo(1);
         assertThat(postRepository.findAll().get(0).getTitle()).isEqualTo("제목");
         assertThat(postRepository.findAll().get(0).getContent()).isEqualTo("내용");
+        assertThat(postRepository.findAll().get(0).getAuthor()).isEqualTo("작성자");
     }
 
     @DisplayName("id로 글이 조회된다.")
@@ -60,6 +64,7 @@ class PostServiceTest {
         Post post = Post.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         postRepository.save(post);
@@ -71,6 +76,8 @@ class PostServiceTest {
         assertThat(findPost.getId()).isEqualTo(post.getId());
         assertThat(findPost.getTitle()).isEqualTo("제목");
         assertThat(findPost.getContent()).isEqualTo("내용");
+        assertThat(findPost.getAuthor()).isEqualTo("작성자");
+
 
     }
 
@@ -81,6 +88,7 @@ class PostServiceTest {
         AddPost addPost = AddPost.builder()
                 .title("제목")
                 .content("내용")
+                .author("작성자")
                 .build();
 
         postService.save(addPost);
@@ -97,6 +105,7 @@ class PostServiceTest {
                 .mapToObj(i -> Post.builder()
                         .title("title" + i)
                         .content("text" + i)
+                        .author("author" + i)
                         .build())
                 .collect(Collectors.toList());
 
