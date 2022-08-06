@@ -4,7 +4,7 @@ jdk:
 
 branches:
   only:
-    - main
+    - master
 
 # Travis CI 서버의 Home
 cache:
@@ -21,4 +21,4 @@ notifications:
       - nasur4da@gmail.com
       - kimsy8979@daum.net
 
-# 트래비스 저장소에 왜 안뜨지???
+# 트래비스 저장소에 왜 안지???
