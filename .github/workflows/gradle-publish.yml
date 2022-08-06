@@ -3,8 +3,8 @@
 env:  
   S3_BUCKET_NAME: rest-api-practice-build 
   PROJECT_NAME: RestApiPractice
-  CODE_DEPLOY_APP_NAME: webservice                    #(15)
-  CODE_DEPLOY_GROUP_NAME: webservice-group
+  CODE_DEPLOY_APP_NAME: rest-api-practice                    #(15)
+  CODE_DEPLOY_GROUP_NAME: rest-api-practice-group
 
 name: deploy # (0) GitHub Action에서 보여질 이름을 지정합니다. 
 
@@ -66,6 +66,6 @@ jobs:
 
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip    #(14)
-      
+
     - name: Code Deploy
       run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_GROUP_NAME --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$PROJECT_NAME.zip    #(16)
