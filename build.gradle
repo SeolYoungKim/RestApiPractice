@@ -27,7 +27,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.session:spring-session-jdbc'
 
-	implementation 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.mariadb.jdbc:mariadb-java-client'  // mariadb 추가
 	implementation 'com.h2database:h2'  // 인메모리 DB 추가
 
 	implementation 'com.querydsl:querydsl-core'

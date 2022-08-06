@@ -41,7 +41,7 @@ class PostServiceTest {
         //given
         AddPost addPost = AddPost.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         //when
@@ -50,7 +50,7 @@ class PostServiceTest {
         //then
         assertThat(postRepository.findAll().size()).isEqualTo(1);
         assertThat(postRepository.findAll().get(0).getTitle()).isEqualTo("제목");
-        assertThat(postRepository.findAll().get(0).getText()).isEqualTo("내용");
+        assertThat(postRepository.findAll().get(0).getContent()).isEqualTo("내용");
     }
 
     @DisplayName("id로 글이 조회된다.")
@@ -59,18 +59,18 @@ class PostServiceTest {
         //given
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
         //when
-        ResponsePost findPost = postService.findById(post.getPId());
+        ResponsePost findPost = postService.findById(post.getId());
 
         //then
-        assertThat(findPost.getId()).isEqualTo(post.getPId());
+        assertThat(findPost.getId()).isEqualTo(post.getId());
         assertThat(findPost.getTitle()).isEqualTo("제목");
-        assertThat(findPost.getText()).isEqualTo("내용");
+        assertThat(findPost.getContent()).isEqualTo("내용");
 
     }
 
@@ -80,7 +80,7 @@ class PostServiceTest {
         //given
         AddPost addPost = AddPost.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postService.save(addPost);
@@ -96,7 +96,7 @@ class PostServiceTest {
         List<Post> postList = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("title" + i)
-                        .text("text" + i)
+                        .content("text" + i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -118,21 +118,21 @@ class PostServiceTest {
     void editPost() {
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
         EditPost editPost = EditPost.builder()
                 .title("하하하")
-                .text("호호호")
+                .content("호호호")
                 .build();
 
 
         post.editPost(editPost);
 
         assertThat(post.getTitle()).isEqualTo("하하하");
-        assertThat(post.getText()).isEqualTo("호호호");
+        assertThat(post.getContent()).isEqualTo("호호호");
     }
 
     @DisplayName("글 삭제 테스트")
@@ -140,15 +140,15 @@ class PostServiceTest {
     void deletePost() throws NullPostException {
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
-        postService.deletePost(post.getPId());
+        postService.deletePost(post.getId());
 
         assertThat(postRepository.findAll().size()).isEqualTo(0);
-        assertThatThrownBy(() -> postService.findById(post.getPId()))
+        assertThatThrownBy(() -> postService.findById(post.getId()))
                 .isInstanceOf(NullPostException.class);
     }
 
@@ -159,7 +159,7 @@ class PostServiceTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
@@ -181,7 +181,7 @@ class PostServiceTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
@@ -190,7 +190,7 @@ class PostServiceTest {
 
         post.editPost(EditPost.builder()
                 .title("zz")
-                .text("yy")
+                .content("yy")
                 .build());
 
         postRepository.save(post);

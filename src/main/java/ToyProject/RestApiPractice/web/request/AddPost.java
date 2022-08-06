@@ -13,15 +13,15 @@ public class AddPost {
     private String title;
 
     @NotBlank(message = "글이 없습니다.")
-    private String text;
+    private String content;
 
     @NotBlank(message = "작성자를 입력해주세요")
     private String author;
 
     @Builder
-    public AddPost(String title, String text, String author) {
+    public AddPost(String title, String content, String author) {
         this.title = title;
-        this.text = text;
+        this.content = content;
         this.author = author;
     }
 }

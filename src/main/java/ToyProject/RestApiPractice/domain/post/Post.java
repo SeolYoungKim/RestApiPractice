@@ -13,26 +13,26 @@ public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pId;
+    private Long id;
 
     @Column
     private String title;
 
     @Column
-    private String text;
+    private String content;
 
     @Column
     private String author;
 
     @Builder
-    public Post(String title, String text, String author) {
+    public Post(String title, String content, String author) {
         this.title = title;
-        this.text = text;
+        this.content = content;
         this.author = author;
     }
 
     public void editPost(EditPost editPost) {
         this.title = editPost.getTitle();
-        this.text = editPost.getText();
+        this.content = editPost.getContent();
     }
 }

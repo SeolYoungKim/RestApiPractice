@@ -19,14 +19,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         return jpaQueryFactory.selectFrom(post)
                 .limit(postPage.getSize())
                 .offset(postPage.getOffset())
-                .orderBy(post.pId.desc())
+                .orderBy(post.id.desc())
                 .fetch();
     }
 
     @Override
     public List<Post> findAllDesc() {
         return jpaQueryFactory.selectFrom(post)
-                .orderBy(post.pId.desc())
+                .orderBy(post.id.desc())
                 .fetch();
     }
 }

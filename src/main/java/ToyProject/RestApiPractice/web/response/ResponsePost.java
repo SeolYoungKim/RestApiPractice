@@ -10,14 +10,14 @@ public class ResponsePost {
 
     private final Long id;
     private final String title;
-    private final String text;
+    private final String content;
     private final String author;
     private final LocalDateTime modifiedDate;
 
     public ResponsePost(Post post) {
-        this.id = post.getPId();
+        this.id = post.getId();
         this.title = post.getTitle();
-        this.text = post.getText();
+        this.content = post.getContent();
         this.author = post.getAuthor();
         this.modifiedDate = post.getModifiedDate();
     }

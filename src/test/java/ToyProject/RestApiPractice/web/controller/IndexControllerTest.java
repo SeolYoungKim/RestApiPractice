@@ -50,7 +50,7 @@ class IndexControllerTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .author("작가")
                 .build();
 

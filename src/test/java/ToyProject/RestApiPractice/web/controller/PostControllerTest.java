@@ -51,7 +51,7 @@ class PostControllerTest {
 
         AddPost addPost = AddPost.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .author("김씨")
                 .build();
 
@@ -60,7 +60,7 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(addPost)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("제목"))
-                .andExpect(jsonPath("$.text").value("내용"))
+                .andExpect(jsonPath("$.content").value("내용"))
                 .andExpect(jsonPath("$.author").value("김씨"))
                 .andDo(print());
     }
@@ -71,7 +71,7 @@ class PostControllerTest {
 
         AddPost addPost = AddPost.builder()
                 .title("")
-                .text(null)
+                .content(null)
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/add")
@@ -80,7 +80,7 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("404"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
-                .andExpect(jsonPath("$.field.text").value("글이 없습니다."))
+                .andExpect(jsonPath("$.field.content").value("글이 없습니다."))
                 .andExpect(jsonPath("$.field.title").value("제목이 없습니다."))
                 .andDo(print());
 
@@ -92,17 +92,17 @@ class PostControllerTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/post/{id}", post.getPId())
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/{id}", post.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(post.getPId()))
+                .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("제목"))
-                .andExpect(jsonPath("$.text").value("내용"))
+                .andExpect(jsonPath("$.content").value("내용"))
                 .andDo(print());
     }
 
@@ -112,7 +112,7 @@ class PostControllerTest {
 
         AddPost addPost = AddPost.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postService.save(addPost);
@@ -132,7 +132,7 @@ class PostControllerTest {
         List<Post> postList = IntStream.range(1, 31)
                 .mapToObj(i -> Post.builder()
                         .title("title" + i)
-                        .text("text" + i)
+                        .content("text" + i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -142,9 +142,9 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].title").value("title30"))
-                .andExpect(jsonPath("$.[0].text").value("text30"))
+                .andExpect(jsonPath("$.[0].content").value("text30"))
                 .andExpect(jsonPath("$.[4].title").value("title26"))
-                .andExpect(jsonPath("$.[4].text").value("text26"))
+                .andExpect(jsonPath("$.[4].content").value("text26"))
                 .andDo(print());
     }
 
@@ -154,23 +154,23 @@ class PostControllerTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
         EditPost editPost = EditPost.builder()
                 .title("title")
-                .text("text")
+                .content("text")
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/post/{id}", post.getPId())
+        mockMvc.perform(MockMvcRequestBuilders.patch("/post/{id}", post.getId())
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(editPost)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(post.getPId()))
+                .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("title"))
-                .andExpect(jsonPath("$.text").value("text"))
+                .andExpect(jsonPath("$.content").value("text"))
                 .andDo(print());
     }
 
@@ -180,12 +180,12 @@ class PostControllerTest {
 
         Post post = Post.builder()
                 .title("제목")
-                .text("내용")
+                .content("내용")
                 .build();
 
         postRepository.save(post);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/post/{id}", post.getPId())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/post/{id}", post.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Delete ok"))

@@ -23,7 +23,7 @@ public class PostService {
     public ResponsePost save(AddPost addPost) {
         Post post = Post.builder()
                 .title(addPost.getTitle())
-                .text(addPost.getText())
+                .content(addPost.getContent())
                 .author(addPost.getAuthor())
                 .build();
 

@@ -13,11 +13,11 @@ public class EditPost {
     private String title;
 
     @NotBlank(message = "내용이 없습니다.")
-    private String text;
+    private String content;
 
     @Builder
-    public EditPost(String title, String text) {
+    public EditPost(String title, String content) {
         this.title = title;
-        this.text = text;
+        this.content = content;
     }
 }
