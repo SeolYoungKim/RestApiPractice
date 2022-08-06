@@ -17,11 +17,11 @@ spring:
         default-page-size: 5
   profiles:
     group:
-      local-real: local-real, oauth
+#      local-real: local-real, oauth
       real: real, real-db, oauth
-      real1: real1, real-db, oauth
-      real2: real2, real-db, oauth
-    include: oauth
+#      real1: real1, real-db, oauth
+#      real2: real2, real-db, oauth
+#    include: oauth
   session:
     jdbc:
       initialize-schema: always
