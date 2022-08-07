@@ -18,7 +18,10 @@ spring:
   profiles:
     group:
 #      local-real: local-real, oauth
-      real: real, real-db, oauth
+      real:
+        - real
+        - real-db
+        - oauth
 #      real1: real1, real-db, oauth
 #      real2: real2, real-db, oauth
 #    include: oauth
