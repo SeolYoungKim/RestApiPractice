@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'ToyProject'
-version = '1.0.1-SNAPSHOT'
+version = '1.0.1-SNAPSHOT' + new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = '11'
 
 configurations {
