@@ -8,6 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * @Login 애노테이션 ArgumentResolver 등록
+ */
+
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

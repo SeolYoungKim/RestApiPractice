@@ -35,4 +35,27 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    /**
+     * 최신 코드 - SecurityFilterChain 작성 방식 변경 (람다식 방식)
+     * 위 코드도 무리없이 돌아는 감
+     */
+
+    public SecurityFilterChain newFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .headers().frameOptions().disable()
+                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
+                        .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+                        .anyRequest().authenticated())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/"))
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .userInfoEndpoint()
+                        .userService(customOAuth2UserService));
+
+        return http.build();
+    }
 }
